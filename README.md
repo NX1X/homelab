@@ -6,13 +6,13 @@
 
 ## About This Project
 
-I've always been a multi-disciplinary person — every aspect of technology interests me. The problem is never the curiosity, it's finding enough time. Well, I never found enough of it, but I built this anyway.
+I've always been a multi-disciplinary person - every aspect of technology interests me. The problem is never the curiosity, it's finding enough time. Well, I never found enough of it, but I built this anyway.
 
 I planned and built a multi-node Proxmox cluster, a managed enterprise switch, a professional pfSense firewall, and a massive UPS. Yes, I have a server rack. And yes, my office is a bit warmer than the rest of the house. That's a sacrifice I can live with.
 
-This project is genuinely addicting — tons of fun. I get to work at the bare metal level, start from power, move up through the physical networking layer, and build everything above it from scratch. I started it out of pure love for trying, discovering, and exploring new things. I wanted to level up my skills across the board. It became my greatest hobby — I stopped gaming, and whenever I have free time, this is where I go.
+This project is genuinely addicting - tons of fun. I get to work at the bare metal level, start from power, move up through the physical networking layer, and build everything above it from scratch. I started it out of pure love for trying, discovering, and exploring new things. I wanted to level up my skills across the board. It became my greatest hobby - I stopped gaming, and whenever I have free time, this is where I go.
 
-The idea is simple: build a company-like infrastructure covering every aspect I can think of. My nickname is NX1X and I call my projects **NX1X LAB** — where I try, test, break, and learn.
+The idea is simple: build a company-like infrastructure covering every aspect I can think of. My nickname is NX1X and I call my projects **NX1X LAB** - where I try, test, break, and learn.
 
 I won't go into the full architecture details here for privacy and security reasons. If you have questions or want to know more, feel free to reach out: [nx1xlab.dev/contact](https://nx1xlab.dev/contact/)
 
@@ -30,12 +30,12 @@ I won't go into the full architecture details here for privacy and security reas
 ![Debian](https://img.shields.io/badge/Debian-A81D33?style=flat-square&logo=debian&logoColor=white)
 ![ZFS](https://img.shields.io/badge/OpenZFS-F00000?style=flat-square&logo=openzfs&logoColor=white)
 
-- **Hypervisor** — Proxmox VE, multi-node cluster
-- **Firewall / Router** — pfSense (DNS, DHCP, VPN, Next-Generation Firewall)
-- **Networking** — Managed switch, VLAN-segmented zones, encrypted VPN for remote access
-- **Storage** — ZFS (RAIDZ1, snapshots), software RAID, NFS, TrueNAS Scale
-- **Backups** — Scheduled cluster-wide VM backups + ZFS snapshots
-- **UPS** — Graceful cluster shutdown on power loss (NUT)
+- **Hypervisor** - Proxmox VE, multi-node cluster
+- **Firewall / Router** - pfSense (DNS, DHCP, VPN, Next-Generation Firewall)
+- **Networking** - Managed switch, VLAN-segmented zones, encrypted VPN for remote access
+- **Storage** - ZFS (RAIDZ1, snapshots), software RAID, NFS, TrueNAS Scale
+- **Backups** - Scheduled cluster-wide VM backups + ZFS snapshots
+- **UPS** - Graceful cluster shutdown on power loss (NUT)
 
 ## Containers & Orchestration
 
@@ -53,9 +53,9 @@ I won't go into the full architecture details here for privacy and security reas
 ![Ansible](https://img.shields.io/badge/Ansible-EE0000?style=flat-square&logo=ansible&logoColor=white)
 ![GitLab](https://img.shields.io/badge/GitLab-FC6D26?style=flat-square&logo=gitlab&logoColor=white)
 
-- Terraform — VM provisioning as code
-- Ansible — configuration management across all nodes
-- GitLab (self-hosted) — Git, CI/CD, issue tracking
+- Terraform - VM provisioning as code
+- Ansible - configuration management across all nodes
+- GitLab (self-hosted) - Git, CI/CD, issue tracking
 
 ## Security & Monitoring
 
@@ -63,12 +63,12 @@ I won't go into the full architecture details here for privacy and security reas
 ![Wazuh](https://img.shields.io/badge/Wazuh-005571?style=flat-square&logoColor=white)
 ![Slack](https://img.shields.io/badge/Slack_Alerts-4A154B?style=flat-square&logo=slack&logoColor=white)
 
-- Wazuh XDR & SIEM — centralized log analysis and intrusion detection on all nodes
-- Syslog — centralized log collection from all infrastructure components
-- Next-Generation Firewall (NGFW) with IDS/IPS — application-aware traffic inspection, intrusion detection and prevention
-- Internal CA — TLS for all internal services, no plain HTTP
-- Zero trust network access — all remote access goes through identity-verified encrypted tunnels
-- Cluster monitoring — real-time Slack alerts for VM events, resource usage, ZFS health, and security events
+- Wazuh XDR & SIEM - centralized log analysis and intrusion detection on all nodes
+- Syslog - centralized log collection from all infrastructure components
+- Next-Generation Firewall (NGFW) with IDS/IPS - application-aware traffic inspection, intrusion detection and prevention
+- Internal CA - TLS for all internal services, no plain HTTP
+- Zero trust network access - all remote access goes through identity-verified encrypted tunnels
+- Cluster monitoring - real-time Slack alerts for VM events, resource usage, ZFS health, and security events
 
 ## Self-hosted Apps
 
