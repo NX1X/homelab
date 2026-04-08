@@ -6,7 +6,7 @@
 # Usage: sudo bash setup.sh
 # ============================================================
 
-set -e
+set -euo pipefail
 
 # ----- EDIT THESE TO MATCH YOUR ENVIRONMENT -----
 GITLAB_IP="10.0.0.10"
@@ -37,7 +37,7 @@ if [ -f "/data/gitlab/config/ssl/${GITLAB_HOST}.crt" ]; then
   echo "  Certificate found for ${GITLAB_HOST}"
 else
   echo "  No certificate found — generating self-signed (replace with CA cert later)"
-  openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
+  openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
     -keyout "/data/gitlab/config/ssl/${GITLAB_HOST}.key" \
     -out "/data/gitlab/config/ssl/${GITLAB_HOST}.crt" \
     -subj "/CN=${GITLAB_HOST}" \
@@ -47,11 +47,15 @@ chmod 600 "/data/gitlab/config/ssl/${GITLAB_HOST}.key"
 
 # --- Open firewall ports ---
 echo "[3/6] Opening UFW ports..."
-ufw allow 80/tcp comment "GitLab HTTP"
-ufw allow 443/tcp comment "GitLab HTTPS"
-ufw allow 2222/tcp comment "GitLab Git SSH"
-ufw allow 5050/tcp comment "GitLab Container Registry"
-ufw reload
+if command -v ufw >/dev/null 2>&1 && ufw status | grep -q "Status: active"; then
+  ufw allow 443/tcp comment "GitLab HTTPS"
+  ufw allow 2222/tcp comment "GitLab Git SSH"
+  ufw allow 5050/tcp comment "GitLab Container Registry"
+  ufw reload
+else
+  echo "  WARNING: UFW not found or not active. Configure your firewall manually."
+  echo "  Required ports: 443/tcp, 2222/tcp, 5050/tcp"
+fi
 
 # --- Copy docker-compose.yml ---
 echo "[4/6] Setting up docker-compose..."
@@ -110,7 +114,7 @@ echo "  https://$GITLAB_HOST  (add a DNS entry first)"
 echo "  https://$GITLAB_IP    (direct IP, cert warning expected)"
 echo ""
 echo "Container Registry:"
-echo "  docker login $GITLAB_HOST:5050"
+echo "  echo <access-token> | docker login --username root --password-stdin $GITLAB_HOST:5050"
 echo ""
 echo "Git clone (HTTPS):"
 echo "  git clone https://$GITLAB_HOST/root/my-project.git"

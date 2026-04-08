@@ -7,7 +7,7 @@ Self-hosted GitLab CE with container registry, deployed via Docker Compose.
 - Linux host with Docker and Docker Compose installed
 - A dedicated data disk or directory (guide uses `/data`)
 - A domain name pointing to your host (e.g., `gitlab.example.lan`)
-- Ports `80`, `443`, `2222`, and `5050` available on the host
+- Ports `443`, `2222`, and `5050` available on the host
 
 ## Quick Start
 
@@ -43,13 +43,12 @@ And update the matching values in `docker-compose.yml` (the `hostname` and `GITL
 
 | Service | Image | Purpose |
 |---------|-------|---------|
-| `gitlab` | `gitlab/gitlab-ce:latest` | GitLab CE + Container Registry |
+| `gitlab` | `gitlab/gitlab-ce:17.8.3-ce.0` | GitLab CE + Container Registry |
 
 ### Exposed Ports
 
 | Port | Service |
 |------|---------|
-| 80 | HTTP (redirects to HTTPS) |
 | 443 | HTTPS (GitLab web UI + API) |
 | 2222 | Git over SSH |
 | 5050 | Container Registry |
@@ -85,7 +84,7 @@ If the host is on a segmented network, allow inbound traffic:
 
 | Source | Dest | Ports | Protocol | Purpose |
 |--------|------|-------|----------|---------|
-| Your workstation / LAN | Host IP | 443, 80 | TCP | Web access |
+| Your workstation / LAN | Host IP | 443 | TCP | Web access |
 | Your workstation / LAN | Host IP | 2222 | TCP | Git SSH |
 | Your workstation / LAN | Host IP | 5050 | TCP | Container registry |
 | CI/CD runners | Host IP | 443, 5050 | TCP | Pulling images / pushing code |
@@ -97,8 +96,8 @@ If the host is on a segmented network, allow inbound traffic:
 ### Container Registry
 
 ```bash
-# Login
-docker login gitlab.example.lan:5050 -u root -p <access-token>
+# Login (use --password-stdin to avoid exposing tokens in shell history)
+echo <access-token> | docker login --username root --password-stdin gitlab.example.lan:5050
 
 # Tag and push
 docker tag myapp:latest gitlab.example.lan:5050/root/myapp:latest

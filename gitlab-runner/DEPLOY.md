@@ -25,7 +25,7 @@ The setup script:
 - Creates directories on `/data`
 - Moves Docker storage to `/data/docker`
 - Adds GitLab hostname to `/etc/hosts`
-- Fetches and trusts GitLab's self-signed certificate
+- Fetches and validates GitLab's self-signed certificate
 - Starts the runner container
 
 ---
@@ -61,8 +61,6 @@ docker exec -it gitlab-runner gitlab-runner register \
   --tls-ca-file /etc/gitlab-runner/certs/ca.crt \
   --executor docker \
   --docker-image docker:latest \
-  --docker-privileged \
-  --docker-volumes '/var/run/docker.sock:/var/run/docker.sock' \
   --docker-extra-hosts 'gitlab.example.lan:<GITLAB_IP>'
 ```
 
@@ -118,12 +116,12 @@ build-image:
   services:
     - docker:dind
   variables:
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: "/certs"
   script:
     - docker info
     - echo "Docker-in-Docker works!"
     # Uncomment to test registry push:
-    # - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # - echo $CI_REGISTRY_PASSWORD | docker login --username $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     # - docker build -t $CI_REGISTRY_IMAGE:latest .
     # - docker push $CI_REGISTRY_IMAGE:latest
 ```

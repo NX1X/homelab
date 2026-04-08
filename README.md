@@ -19,7 +19,7 @@ I won't go into the full architecture details here for privacy and security reas
 ---
 
 > Configs, internal details, and some tools are intentionally not published here for security and privacy reasons.
-
+> I'll be publishing configurations from time to time. Latest upload: Self-hosted GitLab & GitLab Runner. Enjoy!
 ---
 
 

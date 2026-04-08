@@ -1,2 +1,17 @@
 .obsidian/
 .github/instructions/
+
+# Secrets & credentials
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+.env
+.env.*
+**/secrets/
+**/config.toml
+
+# IDE
+.vscode/
+.idea/

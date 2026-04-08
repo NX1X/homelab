@@ -6,7 +6,7 @@
 # Usage: sudo bash setup.sh
 # ============================================================
 
-set -e
+set -euo pipefail
 
 # ----- EDIT THESE TO MATCH YOUR ENVIRONMENT -----
 RUNNER_IP="10.0.0.11"
@@ -60,9 +60,30 @@ fi
 
 # --- Fetch GitLab's self-signed certificate ---
 echo "[4/7] Fetching GitLab SSL certificate..."
-openssl s_client -showcerts -connect "$GITLAB_HOST:443" </dev/null 2>/dev/null \
-  | openssl x509 -outform PEM > /data/gitlab-runner/certs/ca.crt
-cp /data/gitlab-runner/certs/ca.crt /usr/local/share/ca-certificates/gitlab.crt
+CERT_FILE="/data/gitlab-runner/certs/ca.crt"
+
+if ! openssl s_client -showcerts -connect "$GITLAB_HOST:443" </dev/null 2>/dev/null \
+  | openssl x509 -outform PEM > "$CERT_FILE" 2>/dev/null; then
+  echo "  ERROR: Failed to fetch certificate from $GITLAB_HOST:443"
+  echo "  Is GitLab running and reachable?"
+  rm -f "$CERT_FILE"
+  exit 1
+fi
+
+if [ ! -s "$CERT_FILE" ]; then
+  echo "  ERROR: Fetched certificate is empty. Connection may have failed."
+  rm -f "$CERT_FILE"
+  exit 1
+fi
+
+echo "  Certificate fetched. Verifying..."
+if ! openssl x509 -in "$CERT_FILE" -noout -text >/dev/null 2>&1; then
+  echo "  ERROR: Fetched file is not a valid certificate."
+  rm -f "$CERT_FILE"
+  exit 1
+fi
+
+cp "$CERT_FILE" /usr/local/share/ca-certificates/gitlab.crt
 update-ca-certificates
 echo "  Certificate trusted system-wide"
 
@@ -112,8 +133,6 @@ echo "     --url $GITLAB_URL \\"
 echo "     --tls-ca-file /etc/gitlab-runner/certs/ca.crt \\"
 echo "     --executor docker \\"
 echo "     --docker-image docker:latest \\"
-echo "     --docker-privileged \\"
-echo "     --docker-volumes '/var/run/docker.sock:/var/run/docker.sock' \\"
 echo "     --docker-extra-hosts '$GITLAB_HOST:$GITLAB_IP'"
 echo ""
 echo "3. Verify registration:"
