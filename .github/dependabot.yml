@@ -21,14 +21,3 @@ updates:
     labels:
       - "dependencies"
       - "docker"
-
-  # GitHub Actions (if/when workflows are added)
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    open-pull-requests-limit: 10
-    labels:
-      - "dependencies"
-      - "ci"
