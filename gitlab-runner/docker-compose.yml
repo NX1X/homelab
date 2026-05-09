@@ -1,6 +1,6 @@
 services:
   gitlab-runner:
-    image: gitlab/gitlab-runner:v17.8.3
+    image: gitlab/gitlab-runner:v18.11.2
     container_name: gitlab-runner
     restart: unless-stopped
     volumes:
